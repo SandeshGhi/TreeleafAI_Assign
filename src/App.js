@@ -1,25 +1,27 @@
-import logo from './logo.svg';
+import React, { useState , useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Form from './components/form.jsx';
+import Table from './components/table.jsx';
+import Profile from './components/profile.jsx';
 import './App.css';
 
-function App() {
+export const App = () => {
+  const [entries, setEntries] = useState([]);
+
+  useEffect(() => {
+    const storedEntries = JSON.parse(localStorage.getItem('entries')) || [];
+    setEntries(storedEntries);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Router>
+      <Routes>
+        <Route path="/" element={<Form entries={entries} setEntries={setEntries} />} />
+        <Route path="/table" element={<Table entries={entries} setEntries={setEntries} />} />
+        <Route path="/profiles" element={<Profile entries={entries} setEntries={setEntries} />} />
+      </Routes>
+    </Router>
+  )
 }
 
 export default App;
